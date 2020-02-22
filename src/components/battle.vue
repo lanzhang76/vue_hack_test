@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { bus } from "../main";
+
 export default {
   name: "battle",
   data() {
@@ -26,15 +28,10 @@ export default {
         this.submit_sentence();
       }
     },
-    // battle_init: function() {
-    //   let current_sentence = this.$refs.battletextinput.value;
-    //   this.$refs.battletextinput.value = "";
-    //   this.submit_sentence();
-    // },
     submit_sentence: function() {
       let current_sentence = this.$refs.battletextinput.value;
+      bus.$emit("battleF", current_sentence.replace("\n", ""));
       this.$refs.battletextinput.value = "";
-      this.$emit("submit_sentence", current_sentence);
     }
   }
 };

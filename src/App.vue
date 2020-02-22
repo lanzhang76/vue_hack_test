@@ -11,15 +11,12 @@
       </div>
     </div>
     <div>
-      <battle v-on:submit_sentence="update_battle($event)" />
+      <!-- <battle v-on:submit_sentence="update_battle($event)" /> -->
+      <battle />
       <!-- <p>{{battle_input}}</p> -->
     </div>
     <div class="modules" v-for="(i,key) in selected" :key="key">
-      <comModule
-        v-bind:comedian_name="i"
-        v-bind:captionWanted="caption_wanted"
-        v-bind:battleInput="battle_input"
-      />
+      <comModule v-bind:comedian_name="i" v-bind:captionWanted="caption_wanted" />
     </div>
   </div>
 </template>
@@ -45,15 +42,10 @@ export default {
         { comedian_name: "Louis C.K." }
       ],
       selected: [],
-      caption_wanted: false,
-      battle_input: ""
+      caption_wanted: false
     };
   },
-  methods: {
-    update_battle: function(update) {
-      this.battle_input = update;
-    }
-  }
+  methods: {}
 };
 </script>
 

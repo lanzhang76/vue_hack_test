@@ -11,6 +11,9 @@
         </span>
       </p>
     </div>
+    <!-- <p for v-for="({battleOut},key) in battleCompilation" :key="key">
+      <span>{{battleOut}}</span>
+    </p>-->
     <textarea
       ref="textinput"
       v-on:keyup="init_byKey"
@@ -25,6 +28,7 @@
 
 
 <script>
+import { bus } from "../main";
 import { generateEnd } from "./Markov.js";
 import sourceCaption from "./sourceCaption.vue";
 import aziz from "raw-loader!../assets/aziz.txt";
@@ -44,10 +48,6 @@ export default {
     captionWanted: {
       type: Boolean,
       default: true
-    },
-    battleInput: {
-      type: String,
-      default: ""
     }
   },
   components: {
@@ -55,6 +55,7 @@ export default {
   },
   data() {
     return {
+      // battleCompilation: [{ battleOut: "some" }],
       text_label: this.comedian_name,
       show_captions: this.captionWanted,
       conversationChain: [
@@ -62,13 +63,12 @@ export default {
           input: "",
           output: ""
         }
-      ],
-      battle_Input: this.battleInput //HEREREREE
+      ]
     };
   },
   watch: {
     // This would be called anytime the value of title changes
-    captionWanted(newValue, oldValue) {
+    toWatchSomeValue(newValue, oldValue) {
       //do stuff with newValue and oldValue
     }
   },
@@ -105,10 +105,16 @@ export default {
       if (e.keyCode === 13) {
         this.init();
       }
+    },
+    battleToText: function(battleIn) {
+      let current_battleIn = battleIn;
+      let selected_corpus = this.nameCheck(this.text_label);
+      let sentence = generateEnd(current_battleIn, selected_corpus);
+      this.appendToConversation(sentence[0], sentence[1]);
     }
   },
-  mounted() {
-    console.log(this.text_label + " is added.");
+  created() {
+    bus.$on("battleF", this.battleToText);
   }
 };
 </script>
